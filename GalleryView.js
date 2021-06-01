@@ -1,14 +1,20 @@
-
-import React,{ useState } from 'react'
-import  StarWarsAPIService  from '../../shared/api/service/StarWarsAPIService'
+import Axios from 'axios'
+import { useState } from 'react'
+import  { StarWarsAPIService }  from '../../shared/api/service/StarWarsAPIService'
 
 export const GalleryView = () => {
 const [data, setData] = useState()
-const [characterID,  setCharacterID] = useState()
-    
-    const fetchData = async () => {
+
+const fetchData = () => {
+    Axios.get ('https://swapi.dev/api/pepole/1')
+         .then(response => { setData(response) })
+         .catch(error => { console.log(error)})
+}
+
+
+    const fetchData2 = async () => {
         try {
-             const response = await StarWarsAPIService.getStarWarsCharacter(characterID)
+             const response = await Axios.get ('https://swapi.dev/api/pepole/1')
              setData(response.data)
         } catch (error) {
             console.log('error occured', error)
@@ -17,10 +23,8 @@ const [characterID,  setCharacterID] = useState()
 
     return (
         <div>
-            <button onClick={() => fetchData()}>make api call</button>
+            <button onClick={() => fetchData2()}>make api call</button>
             <button onClick={() => console.log(data)}>check my state</button>
-            <input placeholder='search for character ID' 
-               onChange={event => setCharacterID(event.target.value)} />
             <h1>name: {data?.name}</h1> 
             <h1>hair_color: {data?.hair_color}</h1>
             <h1>gender: {data?.gender}</h1>
